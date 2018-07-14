@@ -1,0 +1,18 @@
+XML知识点；
+  XML解析：利用程序按照模版元素的定义名称取出相应的内容。
+  XML解析有两种方式：
+  1）DOM解析操作（读入全部文件内容）
+    形式：DOM树，有4个核心接口：Document/Node/Nodelist/NameNodeMap
+            Document（addresslist）
+                          |
+                 linkman     linkman
+                   |            |
+              name   email name   email
+               |      |      |      |
+               Tom    163    Jim    qq  
+               
+               
+    JAVA常用解析XML程序：JDOM与DOM4J
+    Hibernate和Spring框架使用了DOM4J进行XML解析
+    
+  2）SAX解析操作（顺序读入所需要的文件内容）
