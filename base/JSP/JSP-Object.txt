@@ -1,0 +1,17 @@
+JSP内置对象
+比较常用的9个内置对象：
+  1）pageContext
+  2）request
+  3）response
+  4）session
+  5）application
+  6）config
+  7）out
+  8）page
+  9）exception
+  
+其中对象的属性范围：
+  page对象是针对单个页面
+  reques对象是针对一次请求，页面跳转后依然有效
+  session对象是针对一次会话
+  application对象范围是整个服务器，所有用户均可使用
