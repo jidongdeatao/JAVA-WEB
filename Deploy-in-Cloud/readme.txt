@@ -169,8 +169,23 @@
                   mysql > source /developer/mmall.sql
               可以查看其中的表了:
                   mysql > select * from mmail_user;
-              
-              
+                  
+         7)安装Git
+         sudo wget git地址
+         解压:sudo tar -zxvf git压缩包
+         Git安装依赖：
+         sudo yum -y install zlib-devel openssl-devel cpio expat-devel gettext-devel curl-devel perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker
+         cd git解压缩包目录内
+         sudo make prefix=/usr/local/git all
+         sudo make prefix=/usr/local/git install
+       
+         编译出现错误：
+         参考
+         http://www.mamicode.com/info-detail-1420741.html
+         https://blog.csdn.net/tanga842428/article/details/76861389
+         https://blog.csdn.net/yuan1125/article/details/51050102
+         https://www.cnblogs.com/jinjiezhilu/p/7866035.html
+         
                          
           
   4、自动化发布
