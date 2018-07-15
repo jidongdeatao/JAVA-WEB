@@ -107,9 +107,12 @@
               cd /usr/local/nginx/sbin
               sudo ./nginx，启动nginx
               
-    
-              
               同样，Nginx需要配置防火墙，最后讲，先略过
+           6)安装MySQL
+              查看
+              sudo yum -y install mysql-server
+           6)安装MySQL有没有
+           6)安装MySQL
               
           
   4、自动化发布
