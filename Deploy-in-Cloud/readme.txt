@@ -63,9 +63,9 @@
            启动Tomcat：
               cd tomcat/bin
               sudo ./startup.sh
-           现在可以
-              sudo ./startup.sh中
-              sudo ./st
+           现在可以访问到服务器的Tomcat（记住：安全组与iptables可以允许访问）
+              浏览器中输入公网IP+8080端口
+           
               
           
   4、自动化发布
