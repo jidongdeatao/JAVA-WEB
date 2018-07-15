@@ -126,21 +126,52 @@
                   登录时有可能报这样的错：ERROR 2002 (HY000): Can‘t connect to local MySQL server through socket ‘/var/lib/mysql/mysql.sock‘ (2)，原因是/var/lib/mysql的访问权限问题。下面的命令把/var/lib/mysql的拥有者改为当前用户：
                 $ sudo chown -R wang:wang /var/lib/mysql
                 然后，重启服务：$ service mysqld restart
-                接下来登录重置密码：
-                $ mysql -u root
-                mysql > use mysql;mysql > update user set password=password(‘123456‘) where user=‘root‘;mysql > exit;
+                
               编辑MySQL的字符集：
                 sudo vim /etc/my.cnf
-                加入命令：character-set-server=utf8
-                        default-character-set=utf8
-              配置MySQL的自启动：chkconfig mysqld on
-                
-                  
-
-
-           
-           
+                加入命令：[client]
+                         default-character-set=utf8
+                         [mysqld]
+                         character-set-server=utf8
+                         collation-server=utf8_general_ci
+                重启：systemctl restart mysql.service
+                查看是否生效：
+                mysql> show variables like 'char%';
+                        
+              配置MySQL的自启动：sudo chkconfig mysqld on
+              查看自启动状态：sudo chkconfig --list mysqld
+                其中2、3、4、5都是on说明自启动已打开
+              重启服务：$ sudo service mysqld restart
+              登录数据库：mysql -u root
+              mysql > select user,host,password from mysql.user;
+                修改密码：
+              mysql > set password for root@localhost = password('rootpassword');
+              mysql > set password for root@127.0.0.1 = password('rootpassword');
+              mysql > set password for root@主机名 = password('rootpassword');
+                退出，重新登录：mysql -u root -p
+                干掉无用用户：
+              mysql > delete from mysql.user where user='';
+              mysql > flush privileges;
+                新建用户：
+              mysql > GRANT USAGE ON *.* TO 'mmall'@'localhost' IDENTIFIED BY 'mmallpassword' WITH GRANT OPTION;
+              (注意，这里使用insert into mysql.user(host,user,password) values ("localhost","mail",password("mailpassword"));会报错。
+              mysql > flush privileges;
+                创建数据库并付给新用户访问权限；
+              mysql > create database `mmail` default character set utf8 COLLATE utf8_general_ci;
+              mysql > grant all privileges on mmail.* to mmall@localhost identified by 'mmallpassword';
+              mysql > flush privileges;
               
+              将sql文件导入到数据库中：
+              首先下载sql文件:cd /developer 
+                            sudo wget 地址
+              登录数据库，导入
+                  mysql > use mmall;
+                  mysql > source /developer/mmall.sql
+              可以查看其中的表了:
+                  mysql > select * from mmail_user;
+              
+              
+                         
           
   4、自动化发布
     使用Shell脚本自动化发布
