@@ -86,8 +86,30 @@
               然后重新重新创建一个配置文件：sudo wget vsftpd.conf的下载地址
               vsftp 需要开启iptables策略，这里放在最后再讲，这里先略过
            5）安装Nginx
-              Nginx需要编译：
-           
+              cd /developer/setup
+              sudo wget Nginx压缩包地址
+              解压：sudo tar -zxvf nginx压缩包
+              Nginx需要编译，所以先安装下依赖环境：
+              sudo yum -y install gcc zlib zlib-devel pcre-devel openssl openssl-devel
+              然后，cd 到Nginx解压到目录
+              sudo ./configure
+              sudo make
+              sudo make install,就编译完成了
+              然后开始进行nginx的配置
+              通过whereis nginx 可以查到nginx目录,默认情况下是/usr/local/nginx
+              cd /usr/local/nginx
+              cd conf
+              sudo vim nginx.conf,在其中# HTTPS server 上面增加一条命令：include vhost/*.conf;
+              在/usr/local/nginx/conf目录下，sudo mkdir vhost
+              cd vhost
+              sudo wget 域名解析配置文件地址（这里参考）
+              然后，
+              cd /usr/local/nginx/sbin
+              sudo ./nginx，启动nginx
+              
+    
+              
+              同样，Nginx需要配置防火墙，最后讲，先略过
               
           
   4、自动化发布
