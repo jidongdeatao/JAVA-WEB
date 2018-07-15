@@ -109,10 +109,10 @@
               
               同样，Nginx需要配置防火墙，最后讲，先略过
            6)安装MySQL
-              查看
+              查看有没有默认安装mysql:sudo rpm -qa | grep mysql-server
               sudo yum -y install mysql-server
-           6)安装MySQL有没有
-           6)安装MySQL
+           
+           
               
           
   4、自动化发布
