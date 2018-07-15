@@ -84,7 +84,9 @@
               检查文件安全策略：sudo vim /etc/selinux/config，看下是不是“disabled”,  如果不是“disabled”可以通过输入命令：sudo setsebool -P ftp_home_dir 1 来修改
               将原有的配置文件弄成备份：sudo mv vsftpd.conf vsftpd.conf.bak
               然后重新重新创建一个配置文件：sudo wget vsftpd.conf的下载地址
-              vsftp 需要开启iptables策略，这里放在最后再讲，这里先掠过
+              vsftp 需要开启iptables策略，这里放在最后再讲，这里先略过
+           5）安装Nginx
+              Nginx需要编译：
            
               
           
