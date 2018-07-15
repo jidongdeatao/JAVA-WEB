@@ -111,6 +111,19 @@
            6)安装MySQL
               查看有没有默认安装mysql:sudo rpm -qa | grep mysql-server
               sudo yum -y install mysql-server
+              （如果是CentOS7会出现yum install mysql-server没有可用包：通过以下办法解决
+                  下载mysql的repo源
+                    # wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm 
+                  安装mysql-community-release-el7-5.noarch.rpm包
+                    # rpm -ivh mysql-community-release-el7-5.noarch.rpm
+                    # ls -1 /etc/yum.repos.d/mysql-community*
+                      会获得两个mysql的yum repo源：/etc/yum.repos.d/mysql-community.repo，/etc/yum.repos.d/mysql-community-source.repo。
+                  # yum install mysql-server）
+                  
+              编辑
+                  # yum install mysql-server）
+
+
            
            
               
