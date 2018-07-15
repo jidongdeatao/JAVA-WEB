@@ -63,8 +63,28 @@
            启动Tomcat：
               cd tomcat/bin
               sudo ./startup.sh
-           现在可以访问到服务器的Tomcat（记住：安全组与iptables可以允许访问）
+           现在可以访问到服务器的Tomcat（记住：安全组与iptables可以允许访问,CentOS 7默认情况下是开启了防火墙的，如果不知道如何配置iptables规则，这里可以先使用service iptables stop命令暂时关闭防火墙）
               浏览器中输入公网IP+8080端口
+           3）安装Maven
+                cd /developer
+                sudo wget maven压缩包地址
+                sudo tar -zxvf maven压缩包
+                把之前下载的压缩包移到setup/目录下
+                查看安装是否成功：mvn -version
+           4）安装vsftpd
+              sudo yum -y install vsftpd 
+              单独创建ftp用户
+              sudo useradd ftpuser -d /product/ftpfile/ -s /sbin/nologin
+              sudo chown -R ftpuser.ftpuser /product/ftpfile/
+              重置ftpuser密码：
+              sudo passwd ftpuser
+              接着，
+              cd /etc/vsftpd/
+              sudo vim chroot_list，里面添加“ftpuser"就可以了
+              检查文件安全策略：sudo vim /etc/selinux/config，看下是不是“disabled”,  如果不是“disabled”可以通过输入命令：sudo setsebool -P ftp_home_dir 1 来修改
+              将原有的配置文件弄成备份：sudo mv vsftpd.conf vsftpd.conf.bak
+              然后重新重新创建一个配置文件：sudo wget vsftpd.conf的下载地址
+              vsftp 需要开启iptables策略，这里放在最后再讲，这里先掠过
            
               
           
