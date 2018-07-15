@@ -118,10 +118,24 @@
                     # rpm -ivh mysql-community-release-el7-5.noarch.rpm
                     # ls -1 /etc/yum.repos.d/mysql-community*
                       会获得两个mysql的yum repo源：/etc/yum.repos.d/mysql-community.repo，/etc/yum.repos.d/mysql-community-source.repo。
-                  # yum install mysql-server）
+                  # yum install mysql-server
+                  # yum install mysql-devel）
                   
-              编辑
-                  # yum install mysql-server）
+               重置密码:重置密码前，首先要登录
+                $ mysql -u root
+                  登录时有可能报这样的错：ERROR 2002 (HY000): Can‘t connect to local MySQL server through socket ‘/var/lib/mysql/mysql.sock‘ (2)，原因是/var/lib/mysql的访问权限问题。下面的命令把/var/lib/mysql的拥有者改为当前用户：
+                $ sudo chown -R wang:wang /var/lib/mysql
+                然后，重启服务：$ service mysqld restart
+                接下来登录重置密码：
+                $ mysql -u root
+                mysql > use mysql;mysql > update user set password=password(‘123456‘) where user=‘root‘;mysql > exit;
+              编辑MySQL的字符集：
+                sudo vim /etc/my.cnf
+                加入命令：character-set-server=utf8
+                        default-character-set=utf8
+              配置MySQL的自启动：chkconfig mysqld on
+                
+                  
 
 
            
