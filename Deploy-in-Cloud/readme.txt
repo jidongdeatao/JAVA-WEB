@@ -271,7 +271,18 @@
   4、自动化发布
     使用Shell脚本自动化发布
     参见deploy文件夹中的deploy.sh
-    
+    在/developer目录下，创建文件夹sudo mkdir git-repository
+    将/developer目录与所有文件属主变为普通用户wang：
+        cd /
+        sudo chown -R wang /developer/
+    将/developer目录下读写权限全部赋予给普通用户wang：
+        sudo chmod u+w -R /developer/
+        sudo chmod u+r -R /developer/
+        sudo chmod u+x -R /developer/
+    进入/developer/git-repository 执行 git clone命令，下载源码；
+        git clone 地址
+        
+        
     
   5、线上验证
     前台：
