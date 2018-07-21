@@ -1,0 +1,158 @@
+以下为git在IDEA中的配置：
+  前提已经创建好了一个名字为mmall-new的项目，同时在GitHub上也已经创建了个空项目
+  打开IDEA的Terminals
+      Host:mmall-new hostname$ pwd
+      /Users/hostname/IdeaProjects/project/mmall-new
+      Host:mmall-new hostname$ ls
+      mmall-new.iml   pom.xml         src
+      Host:mmall-new hostname$ touch README.md
+      Host:mmall-new hostname$ touch .gitignore
+      
+  1.首先创建README.md，里面内容随便
+  2.接着创建.gitignore文件，里面的内容如下，这个文件是过滤掉不需要上传的文件
+            *.class
+
+            #package file
+            *.jar
+            *.war
+            *.ear
+
+            #kdiff3 ignore
+            *.orig
+
+            #maven ignore
+            target/
+
+            #eclipse ignore
+            .settings/
+            .project
+            .classpatch
+
+            #idea
+            .idea/
+            /idea/
+            *.ipr
+            *.iml
+            *.iws
+
+            #temp files
+            *.log
+            *.cache
+            *.diff
+            *.patch
+            *.tmp
+
+            #system ignore
+            .DS_Store
+            Thumbs.db
+
+  3.本地项目初始化：git init命令,添加本地文件：git add .,并将本地文件打包进本地仓库:git commit -am 'first commit init project'
+          Host:mmall-new hostname$ git init
+                Initialized empty Git repository in /Users/hostname/IdeaProjects/project/mmall-new/.git/
+          Host:mmall-new hostname$ git status
+                On branch master
+
+                Initial commit
+
+                Untracked files:
+                  (use "git add <file>..." to include in what will be committed)
+
+                        .gitignore
+                        README.md
+                        pom.xml
+                        src/
+
+                nothing added to commit but untracked files present (use "git add" to track)
+          Host:mmall-new hostname$ git add .
+          Host:mmall-new hostname$ git status
+          On branch master
+
+          Initial commit
+
+          Changes to be committed:
+            (use "git rm --cached <file>..." to unstage)
+
+                  new file:   .gitignore
+                  new file:   README.md
+                  new file:   pom.xml
+                  new file:   src/main/webapp/WEB-INF/applicationContext.xml
+                  new file:   src/main/webapp/WEB-INF/log4j.xml
+                  new file:   src/main/webapp/WEB-INF/web.xml
+
+          Host:mmall-new hostname$ git commit -am 'first commit init project'
+          [master (root-commit) e530177] first commit init project
+           6 files changed, 297 insertions(+)
+           create mode 100644 .gitignore
+           create mode 100644 README.md
+           create mode 100644 pom.xml
+           create mode 100644 src/main/webapp/WEB-INF/applicationContext.xml
+           create mode 100644 src/main/webapp/WEB-INF/log4j.xml
+           create mode 100644 src/main/webapp/WEB-INF/web.xml
+           
+    4.连接远程GitHub仓库，并将本地项目推送到远程仓库，这里出现两个问题，看下是怎么解决的：第一个是需要先拉取远程仓库内容，第二个是强制推送
+          Host:mmall-new hostname$ git remote add origin https://github.com/testforfun1/imooc-learning.git
+          Host:mmall-new hostname$ git branch
+              * master
+          Host:mmall-new hostname$ git push -u origin master
+              Username for 'https://github.com': testforfun1
+              Password for 'https://testforfun1@github.com': 
+              To https://github.com/testforfun1/imooc-learning.git
+               ! [rejected]        master -> master (fetch first)
+              error: failed to push some refs to 'https://github.com/testforfun1/imooc-learning.git'
+              hint: Updates were rejected because the remote contains work that you do
+              hint: not have locally. This is usually caused by another repository pushing
+              hint: to the same ref. You may want to first integrate the remote changes
+              hint: (e.g., 'git pull ...') before pushing again.
+              hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+          Host:mmall-new hostname$ git pull
+              warning: no common commits
+              remote: Counting objects: 4, done.
+              remote: Compressing objects: 100% (3/3), done.
+              remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+              Unpacking objects: 100% (4/4), done.
+              From https://github.com/testforfun1/imooc-learning
+               * [new branch]      master     -> origin/master
+              There is no tracking information for the current branch.
+              Please specify which branch you want to merge with.
+              See git-pull(1) for details.
+
+                  git pull <remote> <branch>
+
+              If you wish to set tracking information for this branch you can do so with:
+
+                  git branch --set-upstream-to=origin/<branch> master
+
+          Host:mmall-new hostname$ git push -u origin master
+                To https://github.com/testforfun1/imooc-learning.git
+                 ! [rejected]        master -> master (non-fast-forward)
+                error: failed to push some refs to 'https://github.com/testforfun1/imooc-learning.git'
+                hint: Updates were rejected because the tip of your current branch is behind
+                hint: its remote counterpart. Integrate the remote changes (e.g.
+                hint: 'git pull ...') before pushing again.
+                hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+          Host:mmall-new hostname$ git push -u -f origin master
+                Counting objects: 12, done.
+                Delta compression using up to 4 threads.
+                Compressing objects: 100% (8/8), done.
+                Writing objects: 100% (12/12), 4.82 KiB | 0 bytes/s, done.
+                Total 12 (delta 0), reused 0 (delta 0)
+                To https://github.com/testforfun1/imooc-learning.git
+                 + 8e40990...e530177 master -> master (forced update)
+                Branch master set up to track remote branch master from origin.
+     5.创建分支，现在流行分支开发，主干开发，所以现在创建分支并在其中开发           
+          Host:mmall-new hostname$ git branch
+              * master
+          Host:mmall-new hostname$ git branch -r
+                origin/master
+              Host:mmall-new hostname$ git checkout -b v1.0 origin/master
+              Branch v1.0 set up to track remote branch master from origin.
+              Switched to a new branch 'v1.0'
+          Host:mmall-new hostname$ git branch
+                master
+              * v1.0
+          Host:mmall-new hostname$ git push origin HEAD -u
+              Total 0 (delta 0), reused 0 (delta 0)
+              To https://github.com/testforfun1/imooc-learning.git
+              * [new branch]      HEAD -> v1.0
+              Branch v1.0 set up to track remote branch v1.0 from origin.
+          Host:mmall-new hostname$ 
