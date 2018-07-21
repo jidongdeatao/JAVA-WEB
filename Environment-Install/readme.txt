@@ -13,4 +13,13 @@
         1）配置JDK
         2）配置Maven
         3）配置Tomcat
+        
+    3.安装与配置MySQL，配置JDBC
+      MySQL的安装与配置就不讲了
+      JDBC：
+      是Java数据库的连接（Java Database connectivity),是Java程序与数据库系统通信的标准API，包含一组用Java语言编写的类和接口。
+      下载MySQL JDBC驱动：
+      官方网站：http://mysql.com/downloads/connector/j/
+      简单的Java程序连接MySQL教程参考：JDBC.txt
+      
   
