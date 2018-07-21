@@ -1,0 +1,47 @@
+简单的JDBC程序，可以用来测试： 
+    1）在Eclipse里面新建个JAVA程序，并导入jdbc jar包，在src目录下新建个class文件
+    2）在mysql中新建个数据库imooc，并执行以下sql命令来生成一张表
+          create table imooc_goddess(
+          id int primary key auto_increment,
+          user_name varchar(30) not null,
+          sex int,
+          age int ,
+          birthday date,
+          email varchar(30),
+          mobile varchar(11),
+          create_user varchar(30),
+          create_date date,
+          update_user varchar(30),
+          update_date date,
+          isdel int
+        )engine=innodb default charset=utf8 auto_increment=1;
+
+        alter database imooc default character set 'utf8';
+        SET character_set_client='utf8';
+        SET character_set_connection='utf8';
+        SET character_set_results='utf8';
+     3）在表中增加以后数据，id=1,user_name=小美,age=19
+     4）在Eclipse class文件中写入以下程序，可直接复制
+     
+          package com.imooc.db;
+          import java.sql.*;
+          public class DBUtil {
+
+            private static final String url="jdbc:mysql://127.0.0.1:3306/imooc";
+            private static final String user="root";
+            private static final String password="xxxxxxx";
+
+            public static void main(String[] args) throws Exception{
+              // TODO Auto-generated method stub
+              Class.forName("com.mysql.jdbc.Driver");
+              Connection conn=DriverManager.getConnection(url, user, password);
+              Statement stmt = conn.createStatement();
+              ResultSet rs=stmt.executeQuery("select user_name,age from imooc_goddess");
+
+              while(rs.next()) {
+                System.out.println(rs.getString("user_name")+","+rs.getInt("age"));
+              }
+            }
+
+          }
+     5）执行，看是否会打印出“小美，19”字样
