@@ -21,4 +21,11 @@ JDBC应用教程：
       conn.createStatement();
       
     简单的测试JDBC程序参见simple.txt：
+    
+    详细设计：采用MVC三层架构-从下往上进行设计
+      View（视图层）->显示：该层作用用于把用户行为通知Controller，Controller反过来也会更新Views
+      Control（控制层）->协调控制
+      Model（模型层）->数据：该层作用用于通知Controller，Controller反过来也会更新Model
+      DB（数据库）
+      
    
