@@ -28,4 +28,6 @@ JDBC应用教程：
       Model（模型层）->数据：该层作用用于通知Controller，Controller反过来也会更新Model
       DB（数据库）
       
+      第一步：先搭建模型层
+      
    
