@@ -12,6 +12,10 @@ Tomcat服务器
       在WEB-INF目录下放入index.html
   3.安全配置
 
+经验：
+1.使用IntelliJ IDEA配置Tomcat图文教程
+    https://www.cnblogs.com/Knowledge-has-no-limit/p/7240585.html
+
 
 配置Tomcat使用https协议（配置SSL）
 参考图文教程：http://ln-ydc.iteye.com/blog/1330674
