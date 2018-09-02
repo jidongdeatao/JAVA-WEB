@@ -1,0 +1,219 @@
+Tomcat简介
+
+Tomcat（Apache Tomcat）是Apache 软件基金会（Apache Software Foundation）的Jakarta 项目中的一个核心项目，由Apache、Sun和其他公司及个人共同开发而成。
+
+Tomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应用服务器，在中小型系统和并发访问用户不是很多的场合下被普遍使用，是开发和调试JSP 程序的首选。
+
+对于一个初学者来说，可以这样认为，当在一台机器上配置好Apache 服务器，可利用它响应HTML（标准通用标记语言下的一个应用）页面的访问请求。
+
+实际上Tomcat是Apache 服务器的扩展，但运行时它是独立运行的，所以当你运行tomcat 时，它实际上作为一个与Apache 独立的进程单独运行的。
+
+当配置正确时，Apache 为HTML页面服务，而Tomcat 实际上运行JSP 页面和Servlet。另外，Tomcat和IIS等Web服务器一样，具有处理HTML页面的功能。
+
+另外它还是一个Servlet和JSP容器，独立的Servlet容器是Tomcat的默认模式。不过，Tomcat处理静态HTML的能力不如Apache服务器。
+Tomcat站点搭建
+
+Tomcat虽全称为Apache Tomcat但是配置方法和Apache差别还是不小的，首先它和很多java应用类似，其重点在于环境变量的配置。既包括java环境变量的配置，也包括tomcat环境变量的配置。本次我们直接使用tomcat的软件包进行配置，搭建Linux+Tomcat+Mysql+Jsp的站点，分为以下几步：
+1. 安装并配置Java环境
+2. 安装并配置Tomcat环境
+3. 安装并配置Mysql
+4. 部署Jsp站点
+本篇介绍的Tomcat环境搭建，主要参考的文章是linux公社的一篇：CentOS 6.6下安装配置Tomcat环境，对于其中的部分细节略作修改。下面开始详细介绍如何搭建一个完整的Tomcat站点
+环境介绍
+
+操作系统：CentOS release 6.5 (Final)
+Java版本：jdk1.8.0_60
+Tomcat版本： apache-tomcat-8.0.45 
+站点类型：Jsp
+搭建站点
+
+安装并配置Java环境
+这一步还是非常简单的，概括一下就是：
+下载并安装jdk，同时修改环境变量
+wget http://download.Oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz
+//官网下载jdk1.8
+
+tar -xvzf jdk-8u60-linux-x64.tar.gz -C /usr/local/
+//将其解压至/usr/local目录下，此时的文件夹名应为jdk1.8.0_60
+
+cd /usr/local/
+
+ln -sv jdk1.8.0_60  jdk
+//在/usr/local目录下建立一个软链接，为方便将jdk1.8.0_60建立一个叫jdk的软链接（重命名亦可mv jdk1.8.0_60 jdk）
+然后在/etc/profile.d/目录下创建一个脚本jdk.sh，修改环境变量
+vim /etc/profile.d/jdk.sh
+--------------------------------------------------->
+JAVA_HOME=/usr/local/jdk
+PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME PATH
+<---------------------------------------------------
+. /etc/profile.d/jdk.sh        //重读此文件，让变量生效 ，注意.号后有空格
+其实这种写脚本的方式修改环境变量的方法相对于直接敲命令，更加实用便捷。
+此时执行
+java -version
+安装并配置Tomcat环境
+和配置Java环境非常类似，步骤也大致相同
+下载并安装tomcat，同时修改环境变量
+wget http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.0.45/bin/apache-tomcat-8.0.45.tar.gz
+tar xf apache-tomcat-8.0.45.tar.gz -C /usr/local/
+cd /usr/local/
+ln -sv apache-tomcat-8.0.45 tomcat  //亦可使用mv apache-tomcat-8.0.45 tomcat
+然后在/etc/profile.d/目录下创建一个脚本tomcat.sh，修改环境变量
+vim /etc/profile.d/tomcat.sh
+--------------------------------------------------->
+CATALINA_BASE=/usr/local/tomcat
+PATH=$CATALINA_BASE/bin:$PATH
+export PATH CATALINA_BASE
+<---------------------------------------------------
+. /etc/profile.d/tomcat.sh
+此时执行
+catalina.sh version
+可以看到，tomcat的根路径就是/usr/local/tomcat
+接下来就是配置Tomcat
+配置默认端口为80端口(修改server.xml)
+vim /usr/local/tomcat/conf/server.xml
+---------------------------------------------------------->
+ <Connector port="80" protocol="HTTP/1.1"      //默认端口为8080，改为80
+        connectionTimeout="20000"
+        redirectPort="8443" />
+配置manager-gui管理页面(配置tomcat-users.xml)
+vim /usr/local/tomcat/conf/tomcat-users.xml
+------------------------------------------------------------------------------->
+<role rolename="manager-gui"/>                  //倒数第二行添加，指定用户可以使用的接口为manager-gui
+<user username="tomcat" password="tomcat" roles="manager-gui"/>      //用户名和密码为tomcat，在manager-gui接口使用
+开始第一个网页
+类似于apache之于/var/www/html/，nginx之于/usr/share/nginx/html/，tomcat同样有自己对应的网页目录，一般就是根目录+webapps/，在本机上就是/usr/local/tomcat/webapps/
+假如我们要创建一个叫test的项目，我们需要同时在test目录下建立WEB-INF/classes和WEB-INF/lib文件夹
+mkdir -pv /usr/local/tomcat/webapps/test/WEB-INF/{classes,lib}   //-v参数是显示创建目录是否成功
+ok，可以在test目录下写下第一个Jsp网页了（注：和apache和nginx不同，tomcat默认支持Jsp，因此无需再安装Jsp）
+vim /usr/local/tomcat/webapps/test/index.jsp
+--------------------------------------------------------------->
+<%@ page language="java" %>
+<%@ page import="java.util.*" %>
+<html>
+    <head>
+        <title>test</title>
+    </head>
+    <body>
+        <%
+            out.println("Hello qingteng!");      //嵌入java语言
+        %>
+    </body>
+</html>
+运行一下好了
+catalina.sh start
+非常nice，本机直接访问127.0.0.1或者本机IP
+而我们创建的test项目下的index.jsp文件，可通过访问ip/test/index.jsp打开
+此时其他主机还是无法通过ip的方式访问该主机的，和apache类似，需要开启80端口的访问规则
+/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT  //添加开启80端口规则
+/etc/rc.d/init.d/iptables save  //保存配置
+/etc/rc.d/init.d/iptables restart   //重启iptables
+/etc/init.d/iptables status   //查看开放的端口，出现80
+此时其它主机已经可以正常访问
+还有另外一种访问方式，既然我们已经配置了tomcat-users.xml中的账号密码，我们可以通过点击右上角Manager App，并输入我们配置的账号密码对web应用进行管理
+可以看见我们创建的项目test，单击进去就是/test/index.jsp
+安装并配置Mysql
+yum -y install mysql mysql-server mysql-devel   //安装mysql和其相关拓展
+chkconfig mysqld on  //设置其开机启动
+service mysqld start   //启动mysqld服务
+/usr/bin/mysql_secure_installation  //设置mysql的一些安全配置
+这一步还是很重要的，主要是设置mysql的root密码，是否需要删除匿名账号等等，根据实际需要设置
+此时我们可以登录一下mysql
+部署Jsp站点
+这里用JEECMS做演示，首先放入程序文件，程序可从http://www.jeecms.com下载，下载安装包即可：
+unzip jeecmsv8.1.zip
+cd jeemsv8.1
+mv ROOT/ /usr/local/tomcat/webapps/cms
+catalina.sh stop
+catalina.sh start
+然后访问ip/cms页面即可
+安装过程非常简单，在安装好mysql的情况下，只需要填写一下数据库的密码，仅十几秒即可完成
+重启完成后访问http://192.168.248.141/cms/jeeadmin/jeecms/login.do，使用admin/password登录即可，至此站点搭建完毕
+Tomcat日志分析
+
+相对于apache和nginx，tomcat的日志不仅数量更多而且配置和理解起来也更加复杂，下面详细梳理一下tomcat日志的知识点
+首先看一下tomcat的位置，不同于其它web中间件，它的日志并不在/var/log目录下，而在tomcat安装路径之下的logs文件夹，比如我的本机的路径就是/usr/local/tomcat/logs/，看一下里面有什么吧
+感觉还是挺多的，去个重分别解释一下吧
+日志种类说明
+序号            名称                                        说明
+1        catalina.date.log                       Catalina引擎的日志文件
+2        catalina.out                            Catalina控制台输出，包括标准输出和错误输出
+3        host-manager.date.log                   主机管理日志
+4        localhost.date.log                      Tomcat下内部代码丢出的日志
+5        locahost_access_log.date.txt            网页访问日志
+6        manager.date.log                        应用管理日志
+关于以上日志的内容如果展开了说非常多，而且很多都要阅读官方英文文档才能了解其大致用途，下面挑一些重点日志，详细展开，较为冷门的就一笔带过了。
+首先关于以上日志文件的配置
+1、2、3、4、6均在tomcat根目录/conf/logging.properties下
+5在tomcat根目录/conf/server.xml下
+logging.properties
+一般日志文件定义是3行
+1.  首行决定什么级别及以上的信息输出
+    每类日志的级别分为如下 7 种：
+    SEVERE (highest value) > WARNING > INFO > CONFIG > FINE > FINER > FINEST (lowest value)
+    OFF为禁用输出；ALL为全部输出
+2. 第二行决定输出日志文件的路径
+3. 第三行决定日志文件的前缀
+此外catalina.out由于是输出控制台（console）信息，该信息源于Linux输出的重定向，因此与其它日志不同
+顺便一提，manager和host-manager分别对应tomcat后台页面的Manager App和Host Manager，想要生成这两类日志，需要在tomcat-users.xml里分别配置manager-gui和admin-gui角色的账号密码，并访问相应页面，否则这两个日志都会是空的
+Tomcat默认使用JULI日志系统（可以参考官网文档修改成使用log4j），它是对默认的JDK日志java.util.logging进行一定的封装，和标准JDK日志支持相同的配置。最大的不同是针对不同的classloader，可以使用不同的配置文件，使得tomcat下不同的Web应用程序可以使用各自独立的日志文件。也就是说，Tomcat下的默认日志有如下2个层次：
+* 全局配置文件.
+That is usually done in the ${catalina.base}/conf/logging.properties file. The file is specified by the java.util.logging.config.file System property which is set by the startup scripts. If it is not readable or is not configured, the default is to use the ${java.home}/lib/logging.properties file in the JRE.
+* Web应用程序中使用WEB-INF/classes/logging.properties
+默认的JRE中的logging.properties会把日志输出到System.err（ConsoleHandler）中，而默认的Tomcat下的配置文件conf/logging.properties会增加多个FileHandlers把日志输出到不同的文件。
+关于Juli日志系统的更多内容，或者想把Juli改成Log4j的，推荐这篇文章：Tomcat日志机制
+server.xml
+前面提到5类的日志可归纳为运行日志，一般用于排查服务端console、catalina、tomcat、web应用管理遇到的错误，而且其中详细的配置应该查阅的是对应版本tomcat的官方文档：Apache Tomcat 8 Docs Home
+接下来要介绍的就是访问日志，即访问网页的记录，类似于apache和nginx中的access.log，首先看一下它在server.xml是如何配置的
+关注点主要就是红框标注处
+className        开启访问日志必用类
+directory        日志存放目录
+prefix           日志名前缀
+suffix           日志文件后缀
+pattern          日志记录的格式
+除了第一个className不允许修改外，其它字段值可以根据实际需要修改，最重要的就是pattern，我们结合实际的一例日志文件解释一下
+192.168.248.1 – - [14/Aug/2017:19:39:20 -0700] “GET /cms/jeeadmin/jeecms/index.do HTTP/1.1″ 200 555
+而与之对应的pattern是这样，和apache的access.log确实比较类似
+pattern=”%h %l %u %t “%r” %s %b”
+%h      为远程主机名（若无法获取主机名亦可为远程主机IP）对应192.168.248.1
+%l      为远端登录名(由identd而来)，除非IdentityCheck设为"On"，否则将得到一个"-"
+%u      为远程用户名(根据验证信息而来)，若不存在得到一个"-"
+%t      为时间，用普通日志时间格式(标准英语格式) 对应[14/Aug/2017:19:39:20 -0700]
+&quot;  为双引号"的实体编码
+%r      为请求头第一行（包括HTTP方法和请求的URI），对应GET /cms/jeeadmin/jeecms/index.do HTTP/1.1
+%s      为HTTP响应状态码
+%b      为发送信息的字节数，不包括HTTP头，如果字节数为0的话，显示为-
+关于这个的字段的详细配置说明，查阅官方英文文档最为准确：Tomcat8访问日志字段说明
+Tomcat日志分析Web攻击行为
+
+和之前不同，此次我们使用IBM的AppScan进行深度扫描，相对于手工拿burp suite、sqlmap测试，测试时间更加漫长，甚至比AWVS的时间还长，扫描了约1个半小时才扫描了21%，为了不耽误时间直接暂停了，去看结果。
+扫描完成后，localhost_access_log增加至13M左右
+sql注入攻击
+在日志文件中搜索关键字”SELECT”
+可以看见AppScan采用的payload确实比较特别，除了普通的参数注入外，还会尝试url注入，并添加一些不可见字符
+xss攻击
+在日志中搜索关键字”script”
+xss的payload相对而言比较简单，大多数是做了url编码后直接测试
+目录遍历
+在日志中搜索关键字”../”或者”..%2F”或者”%uff0e%uff0e/”或者”%2e%2e/”或者”%252e%252e/”等等，这些均是各种编码后的../
+命令执行
+在日志中搜索关键字”system”或者”exec”
+一般在命令执行攻击中，system和exec出现的频率还是比较高的
+任意文件读取
+在日志中搜索关键字”/etc/passwd”
+/etc/passwd可以说是攻击者最喜欢读取的文件了，将其作为参数值传递看回显结果来判断是否存在该类型漏洞。
+关于AppScan探测的漏洞还有很多，此处就不一一解释了，有兴趣可以自行探索一下
+补充知识点
+
+1. 如何修改Tomcat默认端口号？
+这个问题其实上面已经给出答案了，修改server.xml中的port
+<Connector port=”80″ protocol=”HTTP/1.1″
+测试时在本机浏览器输入http://127.0.0.1:新端口号 即可
+注：外网主机此时可能无法通过http://IP:新端口号 方式访问，记得修改iptables，添加新端口号规则。
+2. 以root身份启动Tomcat，该服务以什么用户运行？
+使用ps aux|grep tomcat|grep -v grep查看一下
+只有一个root啊，没有tomcat这个用户吗？从/etc/passwd中确实可以看出，安装tomcat不会在系统中新建tomcat用户，以root身份启动tomcat，那么该服务就是以root身份运行的。
+结语
+
+* 到这里Web中间件学习篇就告一段落，虽然说的内容不少，但是还是过于基础，深入的内容没有详细展开，关于中间件的学习自己还远远不够，今后如果掌握地更多的时候，会考虑再写对应的Web中间件学习进阶篇。同时也可能会增加JBoss(WildFly)、WebLogic、WebSphere等中间件的内容。
+* 今后分享的内容将会是一个知名CTF网站HackingLab（http://hackinglab.cn/）的全部关卡攻略，虽然网上有很多其它大牛也写过它的攻略，但是还是想出一个相对完整一些的，也算给自己留个备忘。这也是我第一次正式写CTF题目的writeup，由于工作原因，时间不是很多，打算根据不同关卡分成五期进行更新，每周一期，希望各位多多支持，谢谢~~
