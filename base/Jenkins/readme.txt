@@ -1,0 +1,62 @@
+Jekins官网
+https://jenkins.io
+
+安装：
+下载war包
+
+启动：
+    切换到war包所在路径：
+    使用命令：java -jar jenkins.war
+    打开浏览器输入：localhost：8080
+    会看到一个提示：
+    解锁 Jenkins
+        为了确保管理员安全地安装 Jenkins，密码已写入到日志中（不知道在哪里？）该文件在服务器上：
+        /Users/XXX/.jenkins/secrets/initialAdminPassword
+        请从本地复制密码并粘贴到下面。
+    按照提示操作
+    选择左侧推荐插件安装，等待一小会
+    然后创建账户；
+        admin
+        password
+        admin
+        admin@qq.com
+
+插件管理：
+  安装几款好用的插件：
+    在可选插件列表中选择：
+      Rebuilder
+      Safe_restart
+      
+Jekins基础设置：
+    配置管理员全局安全属性：
+      在系统管理-全局安全配置中设置-添加admin用户，给予admin全部权限
+    添加用户:
+      系统管理-管理用户-新建用户
+        test
+        password
+        test
+        test@qq.com
+     赋予这个用户除了administer之外的全部权限   
+        
+    
+    
+    
+要部署的Linux服务器准备：
+  1.稳定IP 2.用户名、密码 3.SSH服务开启 4.防火墙。。
+  5.java  6.git  
+      配置git的用户名：
+        git config --global user.name "testforfun1"
+      配置email：
+        git config --global user.email "testforfun1@163.com"
+      这两个值不要求为真，有就可以
+      然后生成git的公钥与私钥证书：
+          ssh-keygen -t rsa -C "testforfun1@163.com"
+          可以选择默认设置，这样就在～/.ssh/目录下存在两个文件：id_rsa.pub（公钥） id_rsa（私钥）
+      将Git证书配置到github上，保证Linux服务器与GitHub之间可以联通
+          登陆到自己的GitHub上，在settings - SSH KEY-新建个New Key
+          新建这个名字为：LinuxEnv，然后将之前生成的公钥文件id_rsa.pub复制进去
+          然后在Linux服务器验证下，命令：ssh git@github.com
+  7.Maven
+  
+  
+ 
