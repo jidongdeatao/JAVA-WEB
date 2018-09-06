@@ -57,6 +57,14 @@ Jekins基础设置：
           新建这个名字为：LinuxEnv，然后将之前生成的公钥文件id_rsa.pub复制进去
           然后在Linux服务器验证下，命令：ssh git@github.com
   7.Maven
-  
-  
+    下载安装完Maven后，要配置Maven的环境变量，在/etc/profile添加:
+        export MAVEN_HOME=/developer/apache-maven-3.0.5
+        export PATH=$PATH:$MAVEN_HOME/bin
+        保存然后再执行：./etc/profile
+        验证：mvn --version
+  8.Tomcat
+    这里我修改了Tomcat的服务端口为8090
+    启动运行：
+    在tomcat主目录下输入：./bin/startup.sh
+    
  
