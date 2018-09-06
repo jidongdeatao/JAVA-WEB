@@ -41,7 +41,9 @@ Jekins基础设置：
 ##################################################################################
 要部署的Linux服务器准备：
   1.稳定IP 2.用户名、密码 3.SSH服务开启 4.防火墙。。
-  5.java  6.git  
+  5.java 
+  这里java一定要使用yum install java安装，不然会导致jenkins无法连接
+  6.git  
       配置git的用户名：
         git config --global user.name "testforfun1"
       配置email：
@@ -73,6 +75,26 @@ Jekins基础设置：
              配置IP、路径、用户名、密码
              远程构建目录必填项：/root/jeckin
  启动从节点验证Linux服务器已经成功注册到Jenkins上
- 
+    回到首页创建一个新任务,名称：TestTask，自由风格，确定
+        然后 限制项目的运行节点-选择之前的节点名称TestEnv
+        在构建 中 选择执行shell ，输入一个简单的命令ifconfig来验证
+        保存然后点击立即构建，
+        在构建历史-命令台输出查看结果
+        
+        
+  测试项目：
+      Fork一个项目：
+      使用git clone：
+      使用Intell 导入下载的源码，使用Maven进行检查:打开右侧Maven Project，对于该项目-LifeCycle-使用shift同时选中：clean与install 执行
+                出现 BUILD SUCCESS 说明代码是没有问题的
+      导入sql语句到mysql中
+      修改代码中数据库参数
+      打开右侧Maven Project，Plugins按钮-tomcat7：run，执行
+      如果成功，打开浏览器输入127.0.0.1:8071就可以看到
+      
+  自动化部署过程：
+  
+
+    
                
  
