@@ -35,3 +35,18 @@
 - pom
 
 3.建立完成后，启动项目Application.java
+  可以看到tomcat启动在8080端口，打开浏览器：127.0.0.1:8080，网页显示为404无内容
+  为了看到内容，在com.xx包下新建个java class文件，内容如下,重新启动就可以看到页面有内容输出：
+  package com.xx;
+  import org.springframework.web.bind.annotation.RestController;
+  import org.springframework.web.bind.annotation.RequestMapping;
+
+  @RestController
+  public class HelloController {
+      @RequestMapping("/")
+      public String index() {
+          return "Greetings from Spring Boot!";
+      }
+  }
+  
+4.在
