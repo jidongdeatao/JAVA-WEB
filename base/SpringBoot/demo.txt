@@ -18,7 +18,20 @@
   
 2.使用Intelli IDEA编译器
   创建项目，选择Spring Initializr，JDK版本选择1.8路径，Spring URL为默认https://start.spring.io
-  设置项目名和依赖
-  选择spring boot版本
+  设置项目名和依赖,填写group、artifact
+  选择spring boot版本,钩上web(开启web功能）->点下一步就行了
   等待mvn下载依赖，
+  创建完工程，工程的目录结构如下：
+  - src
+    -main
+        -java
+            -package
+                -SpringbootApplication
+        -resouces
+            - statics
+            - templates
+            - application.yml
+    -test
+- pom
+
 3.建立完成后，启动项目Application.java
