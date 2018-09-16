@@ -1,0 +1,24 @@
+1.环境准备
+  JDK
+  Maven
+  注意：版本要一致
+  这里我选用：JDK为1.8，mvn版本为
+  mvn下载依赖的镜像地址可以选择阿里云，这样会快很多；
+      修改方法：
+      修改maven根目录下的conf文件夹中的setting.xml文件（或者当前用户目录 的 .m2 目录下的 setting.xml 文件）
+      内容如下：
+      <mirrors>
+          <mirror>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <mirrorOf>central</mirrorOf>        
+          </mirror>
+        </mirrors>
+  
+2.使用Intelli IDEA编译器
+  创建项目，选择Spring Initializr，JDK版本选择1.8路径，Spring URL为默认https://start.spring.io
+  设置项目名和依赖
+  选择spring boot版本
+  等待mvn下载依赖，
+3.建立完成后，启动项目Application.java
